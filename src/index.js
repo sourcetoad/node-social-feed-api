@@ -6,14 +6,18 @@ export default class SocialFeedAPI {
    * @param {object} fb
    * @param {object} twitter
    */
-  constructor(fb, twitter) {
-    this.facebook = new Facebook(fb.fbAppId, fb.fbAppSecret, fb.fbPageId);
+  constructor(config) {
+    this.facebook = new Facebook(
+      config.facebook.appId,
+      config.facebook.appSecret,
+      config.facebook.pageId
+    );
     this.twitter = new Twitter(
-      twitter.twitterConsumerKey,
-      twitter.twitterConsumerSecret,
-      twitter.twitterAccessTokenKey,
-      twitter.twitterAccessTokenSecret,
-      twitter.twitterScreenName,
+      config.twitter.consumerKey,
+      config.twitter.consumerSecret,
+      config.twitter.accessTokenKey,
+      config.twitter.accessTokenSecret,
+      config.twitter.screenName,
     );
   }
 
@@ -37,6 +41,8 @@ export default class SocialFeedAPI {
         output.facebook = res[0];
         output.twitter = res[1];
         fulfill(output);
+      }, err => {
+        throw new Error(err);
       });
     });
   }

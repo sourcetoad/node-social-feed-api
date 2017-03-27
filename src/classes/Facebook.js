@@ -43,7 +43,7 @@ export default class Facebook {
     return new Promise((fulfill, reject) => {
       request(`https://graph.facebook.com/${this.data.pageId}/feed?access_token=${this.accessToken}`, (error, response, body) => {
         if (error) reject(error);
-        if (response.statusCode === 200) fulfill(body);
+        if (response.statusCode === 200) fulfill(JSON.parse(body).data);
       });
     });
   }

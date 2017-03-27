@@ -23,11 +23,11 @@ var SocialFeedAPI = function () {
    * @param {object} fb
    * @param {object} twitter
    */
-  function SocialFeedAPI(fb, twitter) {
+  function SocialFeedAPI(config) {
     _classCallCheck(this, SocialFeedAPI);
 
-    this.facebook = new _Facebook2.default(fb.fbAppId, fb.fbAppSecret, fb.fbPageId);
-    this.twitter = new _Twitter2.default(twitter.twitterConsumerKey, twitter.twitterConsumerSecret, twitter.twitterAccessTokenKey, twitter.twitterAccessTokenSecret, twitter.twitterScreenName);
+    this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId);
+    this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
   }
 
   /**
@@ -52,6 +52,8 @@ var SocialFeedAPI = function () {
           output.facebook = res[0];
           output.twitter = res[1];
           fulfill(output);
+        }, function (err) {
+          throw new Error(err);
         });
       });
     }

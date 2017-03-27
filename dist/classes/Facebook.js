@@ -68,7 +68,7 @@ var Facebook = function () {
       return new Promise(function (fulfill, reject) {
         (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/feed?access_token=' + _this2.accessToken, function (error, response, body) {
           if (error) reject(error);
-          if (response.statusCode === 200) fulfill(body);
+          if (response.statusCode === 200) fulfill(JSON.parse(body).data);
         });
       });
     }
