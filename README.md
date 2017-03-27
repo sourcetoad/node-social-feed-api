@@ -1,6 +1,6 @@
 # node-social-feed-api
 
-##### ~CURRENTLY IN DEVELOPMENT~
+##### **CURRENTLY IN DEVELOPMENT**
 
 Simple module to fetch all social feeds and output in one simple API call.
 
