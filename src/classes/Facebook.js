@@ -41,9 +41,12 @@ export default class Facebook {
    */
   getFeed() {
     return new Promise((fulfill, reject) => {
-      request(`https://graph.facebook.com/${this.data.pageId}/feed?access_token=${this.accessToken}`, (error, response, body) => {
-        if (error) reject(error);
-        if (response.statusCode === 200) fulfill(JSON.parse(body).data);
+      request(`https://graph.facebook.com/${this.data.pageId}/feed?access_token=${this.accessToken}`, (err, response, body) => {
+        if (err) {
+          reject(err);
+        } else {
+          fulfill(JSON.parse(body).data);
+        }
       });
     });
   }

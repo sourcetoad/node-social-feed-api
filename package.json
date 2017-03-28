@@ -36,6 +36,7 @@
     "gulp-babel": "^6.1.2"
   },
   "dependencies": {
+    "instagram": "0.0.4",
     "request": "^2.81.0",
     "twitter": "^1.7.0"
   }
