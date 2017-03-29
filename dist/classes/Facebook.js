@@ -57,7 +57,7 @@ var Facebook = function () {
     /**
      * Fetches feed from facebook
      *
-     * @return Promise
+     * @return {Promise}
      */
 
   }, {
@@ -67,8 +67,8 @@ var Facebook = function () {
 
       return new Promise(function (fulfill, reject) {
         (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/feed?access_token=' + _this2.accessToken, function (err, response, body) {
-          if (err) {
-            reject(err);
+          if (err || response.statusCode >= 400) {
+            reject(err || body);
           } else {
             fulfill(JSON.parse(body).data);
           }
@@ -87,7 +87,7 @@ var Facebook = function () {
     value: function fetch() {
       var _this3 = this;
 
-      return new Promise(function (fulfill) {
+      return new Promise(function (fulfill, reject) {
         // If no access token yet, get one
         if (_this3.accessToken === null) {
           _this3.getAccessToken().then(function () {
@@ -97,13 +97,19 @@ var Facebook = function () {
           }).then(function (res) {
             fulfill(res);
           }, function (err) {
-            throw new Error(err);
+            reject({
+              source: 'facebook',
+              error: err
+            });
           });
         } else {
           _this3.getFeed().then(function (res) {
             fulfill(res);
           }, function (err) {
-            throw new Error(err);
+            reject({
+              source: 'facebook',
+              error: err
+            });
           });
         }
       });

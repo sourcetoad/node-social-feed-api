@@ -47,9 +47,15 @@ var Twitter = function () {
       var _this = this;
 
       return new Promise(function (fulfill, reject) {
-        _this.client.get('statuses/user_timeline', { screen_name: _this.screenName }, function (err, tweets, res) {
-          if (err) reject(err);
-          if (res.statusCode === 200) fulfill(tweets);
+        _this.client.get('statuses/user_timeline', { screen_name: _this.screenName }, function (err, body, response) {
+          if (err || response.statusCode >= 400) {
+            reject({
+              source: 'twitter',
+              error: err || body
+            });
+          } else {
+            fulfill(body);
+          }
         });
       });
     }

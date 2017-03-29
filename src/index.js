@@ -1,7 +1,7 @@
 import Facebook from './classes/Facebook';
 import Twitter from './classes/Twitter';
 import Instagram from './classes/Instagram';
-import Google from './classes/Google'
+import Google from './classes/Google';
 
 export default class SocialFeedAPI {
   /**
@@ -30,6 +30,7 @@ export default class SocialFeedAPI {
       config.google.clientSecret,
       config.google.userId,
       config.google.redirectURI,
+      config.google.refreshToken,
     );
   }
 
@@ -65,31 +66,27 @@ export default class SocialFeedAPI {
     });
   }
 
-
   /**
+   * Aggregates all social media feeds
+   * TODO: Don't require all networks.
+   *
    * @return {Promise}
    */
   getFeeds(accessTokens) {
     return new Promise((fulfill, reject) => {
-      const output = {
-        facebook: {},
-        twitter: {},
-        instagram: {},
-        google: {},
-      };
-
       Promise.all([
         this.facebook.fetch(),
         this.twitter.fetch(),
         this.instagram.fetch(accessTokens.instagram),
-        this.google.fetch(accessTokens.google),
+        this.google.fetch(),
       ])
       .then(res => {
-        output.facebook = res[0];
-        output.twitter = res[1];
-        output.instagram = res[2];
-        output.google = res[3];
-        fulfill(output);
+        fulfill({
+          facebook: res[0] || {},
+          twitter: res[1] || {},
+          instagram: res[2] || {},
+          google: res[3] || {},
+        });
       }, err => {
         reject(err);
       });

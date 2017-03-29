@@ -80,7 +80,10 @@ var Instagram = function () {
       return new Promise(function (fulfill, reject) {
         (0, _request2.default)('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + accessToken, function (err, response, body) {
           if (err || response.statusCode >= 400) {
-            reject(err || body);
+            reject({
+              source: 'instagram',
+              error: err || body
+            });
           } else {
             fulfill(JSON.parse(body).data);
           }

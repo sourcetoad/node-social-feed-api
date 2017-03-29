@@ -36,7 +36,7 @@ var SocialFeedAPI = function () {
     this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId);
     this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
     this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.redirectURI);
-    this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI);
+    this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI, config.google.refreshToken);
   }
 
   /**
@@ -81,6 +81,9 @@ var SocialFeedAPI = function () {
     }
 
     /**
+     * Aggregates all social media feeds
+     * TODO: Don't require all networks.
+     *
      * @return {Promise}
      */
 
@@ -90,19 +93,13 @@ var SocialFeedAPI = function () {
       var _this3 = this;
 
       return new Promise(function (fulfill, reject) {
-        var output = {
-          facebook: {},
-          twitter: {},
-          instagram: {},
-          google: {}
-        };
-
-        Promise.all([_this3.facebook.fetch(), _this3.twitter.fetch(), _this3.instagram.fetch(accessTokens.instagram), _this3.google.fetch(accessTokens.google)]).then(function (res) {
-          output.facebook = res[0];
-          output.twitter = res[1];
-          output.instagram = res[2];
-          output.google = res[3];
-          fulfill(output);
+        Promise.all([_this3.facebook.fetch(), _this3.twitter.fetch(), _this3.instagram.fetch(accessTokens.instagram), _this3.google.fetch()]).then(function (res) {
+          fulfill({
+            facebook: res[0] || {},
+            twitter: res[1] || {},
+            instagram: res[2] || {},
+            google: res[3] || {}
+          });
         }, function (err) {
           reject(err);
         });

@@ -7,13 +7,13 @@ export default class Google {
    * @param {string} userId
    * @param {string} redirectURI
    */
-  constructor(clientId, clientSecret, userId, redirectURI) {
+  constructor(clientId, clientSecret, userId, redirectURI, refreshToken) {
     this.data = {
       clientId,
       clientSecret,
       userId,
       redirectURI,
-      accessToken: null,
+      refreshToken,
     };
   }
 
@@ -46,22 +46,53 @@ export default class Google {
       });
     });
   }
+
+  /**
+   * Refreshes access token which is required by Google
+   *
+   * @return {Promise}
+   */
+  refreshAccessToken() {
+    return new Promise((fulfill, reject) => {
+      request.post('https://www.googleapis.com/oauth2/v4/token', {
+        form: {
+          refresh_token: this.data.refreshToken,
+          client_id: this.data.clientId,
+          client_secret: this.data.clientSecret,
+          grant_type: 'refresh_token',
+        },
+      }, (err, response, body) => {
+        if (err || response.statusCode >= 400) {
+          reject(err || body);
+        } else {
+          fulfill(body);
+        }
+      });
+    })
+  }
   /**
    * Calls Google's API and gets posts
+   * Access tokens last one hour
    *
    * @param {string} accessToken
    */
-  fetch(accessToken) {
+  fetch() {
     return new Promise((fulfill, reject) => {
-      request.get(`https://www.googleapis.com/plus/v1/people/${this.data.userId}/activities/public?access_token=${accessToken}`,
-        (err, response, body) => {
-          // console.log(response);
-          if (err || response.statusCode >= 400) {
-            reject(err || body);
-          } else {
-            fulfill(JSON.parse(body).items);
-          }
+      this.refreshAccessToken()
+      .then(res => {
+        const token = JSON.parse(res).access_token;
+        request.get(`https://www.googleapis.com/plus/v1/people/${this.data.userId}/activities/public?access_token=${token}`,
+          (err, response, body) => {
+            if (err || response.statusCode >= 400) {
+              reject({
+                source: 'google',
+                error: err || body,
+              });
+            } else {
+              fulfill(JSON.parse(body).items);
+            }
         });
+      });
     });
   }
 }

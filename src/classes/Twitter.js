@@ -25,9 +25,15 @@ export default class Twitter {
    */
   fetch() {
     return new Promise((fulfill, reject) => {
-      this.client.get('statuses/user_timeline', { screen_name: this.screenName }, (err, tweets, res) => {
-        if (err) reject(err);
-        if (res.statusCode === 200) fulfill(tweets);
+      this.client.get('statuses/user_timeline', { screen_name: this.screenName }, (err, body, response) => {
+        if (err || response.statusCode >= 400) {
+          reject({
+            source: 'twitter',
+            error: err || body,
+          });
+        } else {
+          fulfill(body);
+        }
       });
     });
   }

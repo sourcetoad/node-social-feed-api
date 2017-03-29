@@ -55,7 +55,10 @@ export default class Instagram {
     return new Promise((fulfill, reject) => {
       request(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${accessToken}`, (err, response, body) => {
         if (err || response.statusCode >= 400) {
-          reject(err || body);
+          reject({
+            source: 'instagram',
+            error: err || body,
+          });
         } else {
           fulfill(JSON.parse(body).data);
         }

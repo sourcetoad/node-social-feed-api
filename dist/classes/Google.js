@@ -21,7 +21,7 @@ var Google = function () {
    * @param {string} userId
    * @param {string} redirectURI
    */
-  function Google(clientId, clientSecret, userId, redirectURI) {
+  function Google(clientId, clientSecret, userId, redirectURI, refreshToken) {
     _classCallCheck(this, Google);
 
     this.data = {
@@ -29,7 +29,7 @@ var Google = function () {
       clientSecret: clientSecret,
       userId: userId,
       redirectURI: redirectURI,
-      accessToken: null
+      refreshToken: refreshToken
     };
   }
 
@@ -68,25 +68,60 @@ var Google = function () {
         });
       });
     }
+
+    /**
+     * Refreshes access token which is required by Google
+     *
+     * @return {Promise}
+     */
+
+  }, {
+    key: 'refreshAccessToken',
+    value: function refreshAccessToken() {
+      var _this2 = this;
+
+      return new Promise(function (fulfill, reject) {
+        _request2.default.post('https://www.googleapis.com/oauth2/v4/token', {
+          form: {
+            refresh_token: _this2.data.refreshToken,
+            client_id: _this2.data.clientId,
+            client_secret: _this2.data.clientSecret,
+            grant_type: 'refresh_token'
+          }
+        }, function (err, response, body) {
+          if (err || response.statusCode >= 400) {
+            reject(err || body);
+          } else {
+            fulfill(body);
+          }
+        });
+      });
+    }
     /**
      * Calls Google's API and gets posts
+     * Access tokens last one hour
      *
      * @param {string} accessToken
      */
 
   }, {
     key: 'fetch',
-    value: function fetch(accessToken) {
-      var _this2 = this;
+    value: function fetch() {
+      var _this3 = this;
 
       return new Promise(function (fulfill, reject) {
-        _request2.default.get('https://www.googleapis.com/plus/v1/people/' + _this2.data.userId + '/activities/public?access_token=' + accessToken, function (err, response, body) {
-          // console.log(response);
-          if (err || response.statusCode >= 400) {
-            reject(err || body);
-          } else {
-            fulfill(JSON.parse(body).items);
-          }
+        _this3.refreshAccessToken().then(function (res) {
+          var token = JSON.parse(res).access_token;
+          _request2.default.get('https://www.googleapis.com/plus/v1/people/' + _this3.data.userId + '/activities/public?access_token=' + token, function (err, response, body) {
+            if (err || response.statusCode >= 400) {
+              reject({
+                source: 'google',
+                error: err || body
+              });
+            } else {
+              fulfill(JSON.parse(body).items);
+            }
+          });
         });
       });
     }

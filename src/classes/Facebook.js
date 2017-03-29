@@ -37,13 +37,13 @@ export default class Facebook {
   /**
    * Fetches feed from facebook
    *
-   * @return Promise
+   * @return {Promise}
    */
   getFeed() {
     return new Promise((fulfill, reject) => {
       request(`https://graph.facebook.com/${this.data.pageId}/feed?access_token=${this.accessToken}`, (err, response, body) => {
-        if (err) {
-          reject(err);
+        if (err || response.statusCode >= 400) {
+          reject(err || body);
         } else {
           fulfill(JSON.parse(body).data);
         }
@@ -57,7 +57,7 @@ export default class Facebook {
    * @return Promise
    */
   fetch() {
-    return new Promise(fulfill => {
+    return new Promise((fulfill, reject) => {
       // If no access token yet, get one
       if (this.accessToken === null) {
         this.getAccessToken()
@@ -69,14 +69,20 @@ export default class Facebook {
         .then(res => {
           fulfill(res);
         }, err => {
-          throw new Error(err);
+          reject({
+            source: 'facebook',
+            error: err,
+          });
         });
       } else {
         this.getFeed()
         .then(res => {
           fulfill(res);
         }, err => {
-          throw new Error(err);
+          reject({
+            source: 'facebook',
+            error: err,
+          });
         });
       }
     });
