@@ -104,7 +104,6 @@ var SocialFeedAPI = function () {
           output.google = res[3];
           fulfill(output);
         }, function (err) {
-          console.log(err);
           reject(err);
         });
       });

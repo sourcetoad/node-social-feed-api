@@ -91,7 +91,6 @@ export default class SocialFeedAPI {
         output.google = res[3];
         fulfill(output);
       }, err => {
-        console.log(err);
         reject(err);
       });
     });

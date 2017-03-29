@@ -20,6 +20,46 @@ Simple module to fetch all social feeds and output in one simple API call.
 2. In the example below, the access token will log to the console. It is recommended you store that in an env file or redis so you never have to call initializeInstagram again (see example usage)
 
 ### Setup
+
+Instagram and Google both require user-specific access tokens, thus requiring special setup. See full example below for more specific examples.
+
+##### Instagram
+
+** Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below. **
+1. In a web browser, navigate to https://www.instagram.com/oauth/authorize/?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code. It will prompt you to login with an instagram account. This is to generate an access token.
+2. Once logged in, click the green authorize button.
+3. In your console, you should see an object output. One of the fields is called access_token. If you see that, you have successfully generated your access token!
+4. Take that access token and place it in your applications env file or equivalent so you do not have to continually generate a new access token (Instagrams access tokens do not expire as of today).
+```javascript
+social.initializeInstagram('YOUR_CODE_FROM_CALLBACK_URI')
+.then(response => {
+  console.log(response);
+  instaAccessToken = response.access_token;
+  res.status(201).json({ message: 'Access token generated successfully!' });
+}, () => {
+  res.status(400).json({ message: 'Error occurred generating Instagram access token.' });
+});
+```
+
+##### Google
+** Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below. **
+
+1. In a web browser, navigate to https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=YOUR_REDIRECT_URI&response_type=code&client_id=YOUR_CLIENT_IDscope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&access_type=offline
+2. Click "Allow"
+3. In your console, you should now see an object with a field "access_token." If you do, you have generated your access token successfully!
+4. Copy that value and place it in your env file or equivalent.
+5. Now we will need to get the user id of the profile you want to get the feed for. In a web browser, navigate to https://www.googleapis.com/plus/v1/people/me?access_token=YOUR_ACCESS_TOKEN. You will see a field called "id." That is your google user id. Place that in your env or equivalent.
+```javascript
+social.initializeGoogle(req.query.code)
+.then(response => {
+  console.log(response);
+  gAccessToken = response.access_token;
+  res.status(201).json({ message: 'Access token generated successfully!' });
+}, () => {
+  res.status(400).json({ message: 'Error occurred generating google access token.' });
+});
+```
+##### Full
 ```javascript
 const social = new SocialFeed({
   facebook: {
@@ -39,18 +79,16 @@ const social = new SocialFeed({
     clientSecret: instagramClientSecret,
     redirectURI: instagramRedirectURI,
   },
+  google: {
+    clientId: googleClientId,
+    clientSecret: googleClientSecret,
+    userId: googleUserId,
+    redirectURI: googleRedirectURI,
+  },
 });
 ```
-##### If you want to pull from instagram you must call initializeInstagram (see full example below)
-```javascript
-social.initializeInstagram('YOUR_CODE_FROM_CALLBACK_URI')
-.then(response => {
-  console.log(response);
-  instaAccessToken = response.access_token;
-  res.status(201).json({ message: 'Access token generated successfully!' });
-});
-```
-### Example (with Express)
+
+### Full Example (with Express)
 
 ```javascript
 import express from 'express';
@@ -95,21 +133,33 @@ const social = new SocialFeed({
     clientSecret: instagramClientSecret,
     redirectURI: instagramRedirectURI,
   },
+  google: {
+    clientId: googleClientId,
+    clientSecret: googleClientSecret,
+    userId: googleUserId,
+    redirectURI: googleRedirectURI,
+  },
 });
 
 let instaAccessToken = instagramAccessToken || '';
+let gAccessToken = googleAccessToken || '';
 
+// TODO: add error logging
 app.get('/v1/socialFeed', (req, res) => {
-  social.getFeeds()
+  const accessTokens = {
+    instagram: instaAccessToken,
+    google: gAccessToken,
+  };
+  social.getFeeds(accessTokens)
   .then(response => {
     res.status(200).json({ response });
-  }, err => {
-    console.log(err);
+  }, () => {
     res.status(400).json({ error: 'There was an error fetching feeds' });
-  })
+  });
 });
 
 app.get('/v1/instaRedirect', (req, res) => {
+  if (instaAccessToken) res.status(400).json({ message: 'Access token already generated' });
   if (req.query.code) {
     if (!instaAccessToken) {
       social.initializeInstagram(req.query.code)
@@ -117,6 +167,26 @@ app.get('/v1/instaRedirect', (req, res) => {
         console.log(response);
         instaAccessToken = response.access_token;
         res.status(201).json({ message: 'Access token generated successfully!' });
+      }, () => {
+        res.status(400).json({ message: 'Error occurred generating instagram access token.' });
+      });
+    }
+  } else {
+    res.status(400).json({ error: 'An error occurred' });
+  }
+});
+
+app.get('/v1/googleRedirect', (req, res) => {
+  if (gAccessToken) res.status(400).json({ message: 'Access token already generated' });
+  if (req.query.code) {
+    if (!gAccessToken) {
+      social.initializeGoogle(req.query.code)
+      .then(response => {
+        console.log(response);
+        gAccessToken = response.access_token;
+        res.status(201).json({ message: 'Access token generated successfully!' });
+      }, () => {
+        res.status(400).json({ message: 'Error occurred generating google access token.' });
       });
     }
   } else {

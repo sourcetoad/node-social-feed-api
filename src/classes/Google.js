@@ -1,6 +1,12 @@
 import request from 'request';
 
 export default class Google {
+  /**
+   * @param {string} clientId
+   * @param {string} clientSecret
+   * @param {string} userId
+   * @param {string} redirectURI
+   */
   constructor(clientId, clientSecret, userId, redirectURI) {
     this.data = {
       clientId,
@@ -40,7 +46,11 @@ export default class Google {
       });
     });
   }
-
+  /**
+   * Calls Google's API and gets posts
+   *
+   * @param {string} accessToken
+   */
   fetch(accessToken) {
     return new Promise((fulfill, reject) => {
       request.get(`https://www.googleapis.com/plus/v1/people/${this.data.userId}/activities/public?access_token=${accessToken}`,

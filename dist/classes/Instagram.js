@@ -58,8 +58,8 @@ var Instagram = function () {
             code: code
           }
         }, function (err, response, body) {
-          if (err) {
-            reject(err);
+          if (err || response.statusCode >= 400) {
+            reject(err || body);
           } else {
             fulfill(body);
           }
@@ -79,8 +79,8 @@ var Instagram = function () {
     value: function fetch(accessToken) {
       return new Promise(function (fulfill, reject) {
         (0, _request2.default)('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + accessToken, function (err, response, body) {
-          if (err) {
-            reject(err);
+          if (err || response.statusCode >= 400) {
+            reject(err || body);
           } else {
             fulfill(JSON.parse(body).data);
           }

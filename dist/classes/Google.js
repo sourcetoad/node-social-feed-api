@@ -15,6 +15,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Google = function () {
+  /**
+   * @param {string} clientId
+   * @param {string} clientSecret
+   * @param {string} userId
+   * @param {string} redirectURI
+   */
   function Google(clientId, clientSecret, userId, redirectURI) {
     _classCallCheck(this, Google);
 
@@ -62,6 +68,12 @@ var Google = function () {
         });
       });
     }
+    /**
+     * Calls Google's API and gets posts
+     *
+     * @param {string} accessToken
+     */
+
   }, {
     key: 'fetch',
     value: function fetch(accessToken) {
