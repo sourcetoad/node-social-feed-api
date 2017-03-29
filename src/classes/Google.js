@@ -1,4 +1,5 @@
 import request from 'request';
+import API from './API';
 
 export default class Google {
   /**
@@ -89,7 +90,7 @@ export default class Google {
                 error: err || body,
               });
             } else {
-              fulfill(JSON.parse(body).items);
+              fulfill(API.normalize('google', JSON.parse(body).items));
             }
         });
       });

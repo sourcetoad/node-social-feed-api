@@ -10,6 +10,10 @@ var _twitter = require('twitter');
 
 var _twitter2 = _interopRequireDefault(_twitter);
 
+var _API = require('./API');
+
+var _API2 = _interopRequireDefault(_API);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54,7 +58,7 @@ var Twitter = function () {
               error: err || body
             });
           } else {
-            fulfill(body);
+            fulfill(_API2.default.normalize('twitter', body));
           }
         });
       });

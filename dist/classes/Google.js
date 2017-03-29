@@ -10,6 +10,10 @@ var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
 
+var _API = require('./API');
+
+var _API2 = _interopRequireDefault(_API);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -119,7 +123,7 @@ var Google = function () {
                 error: err || body
               });
             } else {
-              fulfill(JSON.parse(body).items);
+              fulfill(_API2.default.normalize('google', JSON.parse(body).items));
             }
           });
         });

@@ -1,4 +1,5 @@
 import TwitterAPI from 'twitter';
+import API from './API';
 
 export default class Twitter {
   /**
@@ -32,7 +33,7 @@ export default class Twitter {
             error: err || body,
           });
         } else {
-          fulfill(body);
+          fulfill(API.normalize('twitter', body));
         }
       });
     });

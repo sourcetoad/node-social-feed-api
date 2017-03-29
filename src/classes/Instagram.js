@@ -1,4 +1,5 @@
 import request from 'request';
+import API from './API';
 
 export default class Instagram {
   /**
@@ -60,7 +61,7 @@ export default class Instagram {
             error: err || body,
           });
         } else {
-          fulfill(JSON.parse(body).data);
+          fulfill(API.normalize('instagram', JSON.parse(body).data));
         }
       });
     });

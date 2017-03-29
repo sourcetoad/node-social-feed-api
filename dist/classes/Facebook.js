@@ -10,6 +10,10 @@ var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
 
+var _API = require('./API');
+
+var _API2 = _interopRequireDefault(_API);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -95,7 +99,7 @@ var Facebook = function () {
           }, function (err) {
             throw new Error(err);
           }).then(function (res) {
-            fulfill(res);
+            fulfill(_API2.default.normalize('facebook', res));
           }, function (err) {
             reject({
               source: 'facebook',
@@ -104,7 +108,7 @@ var Facebook = function () {
           });
         } else {
           _this3.getFeed().then(function (res) {
-            fulfill(res);
+            fulfill(_API2.default.normalize('facebook', res));
           }, function (err) {
             reject({
               source: 'facebook',

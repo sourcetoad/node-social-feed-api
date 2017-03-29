@@ -184,7 +184,6 @@ app.get('/v1/googleRedirect', (req, res) => {
       social.initializeGoogle(req.query.code)
       .then(response => {
         console.log(response);
-        googleRefreshToken = response.refresh_token;
         res.status(201).json({ message: 'Google tokens generated successfully!' });
       }, () => {
         res.status(400).json({ message: 'Error occurred generating google tokens.' });

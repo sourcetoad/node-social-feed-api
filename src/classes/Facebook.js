@@ -1,4 +1,5 @@
 import request from 'request';
+import API from './API';
 
 export default class Facebook {
   /**
@@ -67,7 +68,7 @@ export default class Facebook {
           throw new Error(err);
         })
         .then(res => {
-          fulfill(res);
+          fulfill(API.normalize('facebook', res));
         }, err => {
           reject({
             source: 'facebook',
@@ -77,7 +78,7 @@ export default class Facebook {
       } else {
         this.getFeed()
         .then(res => {
-          fulfill(res);
+          fulfill(API.normalize('facebook', res));
         }, err => {
           reject({
             source: 'facebook',
