@@ -18,14 +18,17 @@ var _Instagram = require('./classes/Instagram');
 
 var _Instagram2 = _interopRequireDefault(_Instagram);
 
+var _Google = require('./classes/Google');
+
+var _Google2 = _interopRequireDefault(_Google);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var SocialFeedAPI = function () {
   /**
-   * @param {object} fb
-   * @param {object} twitter
+   * @param {object} config
    */
   function SocialFeedAPI(config) {
     _classCallCheck(this, SocialFeedAPI);
@@ -33,6 +36,7 @@ var SocialFeedAPI = function () {
     this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId);
     this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
     this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.redirectURI);
+    this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI);
   }
 
   /**
@@ -57,15 +61,35 @@ var SocialFeedAPI = function () {
     }
 
     /**
+     * Generates an access token from Google which is required
+     *
+     * @return {Promise}
+     */
+
+  }, {
+    key: 'initializeGoogle',
+    value: function initializeGoogle(code) {
+      var _this2 = this;
+
+      return new Promise(function (fulfill, reject) {
+        _this2.google.initialize(code).then(function (res) {
+          fulfill(res);
+        }, function (err) {
+          reject(err);
+        });
+      });
+    }
+
+    /**
      * @return {Promise}
      */
 
   }, {
     key: 'getFeeds',
-    value: function getFeeds(instagramAccessToken) {
-      var _this2 = this;
+    value: function getFeeds(accessTokens) {
+      var _this3 = this;
 
-      return new Promise(function (fulfill) {
+      return new Promise(function (fulfill, reject) {
         var output = {
           facebook: {},
           twitter: {},
@@ -73,13 +97,15 @@ var SocialFeedAPI = function () {
           google: {}
         };
 
-        Promise.all([_this2.facebook.fetch(), _this2.twitter.fetch(), _this2.instagram.fetch(instagramAccessToken)]).then(function (res) {
+        Promise.all([_this3.facebook.fetch(), _this3.twitter.fetch(), _this3.instagram.fetch(accessTokens.instagram), _this3.google.fetch(accessTokens.google)]).then(function (res) {
           output.facebook = res[0];
           output.twitter = res[1];
           output.instagram = res[2];
+          output.google = res[3];
           fulfill(output);
         }, function (err) {
-          throw new Error(err);
+          console.log(err);
+          reject(err);
         });
       });
     }

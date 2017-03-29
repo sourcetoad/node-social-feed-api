@@ -1,17 +1,17 @@
 import Facebook from './classes/Facebook';
 import Twitter from './classes/Twitter';
 import Instagram from './classes/Instagram';
+import Google from './classes/Google'
 
 export default class SocialFeedAPI {
   /**
-   * @param {object} fb
-   * @param {object} twitter
+   * @param {object} config
    */
   constructor(config) {
     this.facebook = new Facebook(
       config.facebook.appId,
       config.facebook.appSecret,
-      config.facebook.pageId
+      config.facebook.pageId,
     );
     this.twitter = new Twitter(
       config.twitter.consumerKey,
@@ -24,6 +24,12 @@ export default class SocialFeedAPI {
       config.instagram.clientId,
       config.instagram.clientSecret,
       config.instagram.redirectURI,
+    );
+    this.google = new Google(
+      config.google.clientId,
+      config.google.clientSecret,
+      config.google.userId,
+      config.google.redirectURI,
     );
   }
 
@@ -44,10 +50,27 @@ export default class SocialFeedAPI {
   }
 
   /**
+   * Generates an access token from Google which is required
+   *
    * @return {Promise}
    */
-  getFeeds(instagramAccessToken) {
-    return new Promise(fulfill => {
+  initializeGoogle(code) {
+    return new Promise((fulfill, reject) => {
+      this.google.initialize(code)
+      .then(res => {
+        fulfill(res);
+      }, err => {
+        reject(err);
+      });
+    });
+  }
+
+
+  /**
+   * @return {Promise}
+   */
+  getFeeds(accessTokens) {
+    return new Promise((fulfill, reject) => {
       const output = {
         facebook: {},
         twitter: {},
@@ -58,15 +81,18 @@ export default class SocialFeedAPI {
       Promise.all([
         this.facebook.fetch(),
         this.twitter.fetch(),
-        this.instagram.fetch(instagramAccessToken),
+        this.instagram.fetch(accessTokens.instagram),
+        this.google.fetch(accessTokens.google),
       ])
       .then(res => {
         output.facebook = res[0];
         output.twitter = res[1];
         output.instagram = res[2];
+        output.google = res[3];
         fulfill(output);
       }, err => {
-        throw new Error(err);
+        console.log(err);
+        reject(err);
       });
     });
   }
