@@ -8,30 +8,38 @@ export default class SocialFeedAPI {
    * @param {object} config
    */
   constructor(config) {
-    this.facebook = new Facebook(
-      config.facebook.appId,
-      config.facebook.appSecret,
-      config.facebook.pageId,
-    );
-    this.twitter = new Twitter(
-      config.twitter.consumerKey,
-      config.twitter.consumerSecret,
-      config.twitter.accessTokenKey,
-      config.twitter.accessTokenSecret,
-      config.twitter.screenName,
-    );
-    this.instagram = new Instagram(
-      config.instagram.clientId,
-      config.instagram.clientSecret,
-      config.instagram.redirectURI,
-    );
-    this.google = new Google(
-      config.google.clientId,
-      config.google.clientSecret,
-      config.google.userId,
-      config.google.redirectURI,
-      config.google.refreshToken,
-    );
+    if (config.facebook) {
+      this.facebook = new Facebook(
+        config.facebook.appId,
+        config.facebook.appSecret,
+        config.facebook.pageId,
+      );
+    }
+    if (config.twitter) {
+      this.twitter = new Twitter(
+        config.twitter.consumerKey,
+        config.twitter.consumerSecret,
+        config.twitter.accessTokenKey,
+        config.twitter.accessTokenSecret,
+        config.twitter.screenName,
+      );
+    }
+    if (config.instagram) {
+      this.instagram = new Instagram(
+        config.instagram.clientId,
+        config.instagram.clientSecret,
+        config.instagram.redirectURI,
+      );
+    }
+    if (config.google) {
+      this.google = new Google(
+        config.google.clientId,
+        config.google.clientSecret,
+        config.google.userId,
+        config.google.redirectURI,
+        config.google.refreshToken,
+      );
+    }
   }
 
   /**
@@ -75,10 +83,10 @@ export default class SocialFeedAPI {
   getFeeds(accessTokens) {
     return new Promise((fulfill, reject) => {
       Promise.all([
-        this.facebook.fetch(),
-        this.twitter.fetch(),
-        this.instagram.fetch(accessTokens.instagram),
-        this.google.fetch(),
+        this.facebook ? this.facebook.fetch() : Promise.resolve(null),
+        this.twitter ? this.twitter.fetch() : Promise.resolve(null),
+        this.instagram ? this.instagram.fetch(accessTokens.instagram) : Promise.resolve(null),
+        this.google ? this.google.fetch() : Promise.resolve(null),
       ])
       .then(res => {
         fulfill({

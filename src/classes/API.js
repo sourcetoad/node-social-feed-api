@@ -13,7 +13,7 @@ export default class API {
         items.push({
           id: data[i].id,
           text: data[i].message,
-          created_at: data[i].created_time
+          created_at: data[i].created_time,
         });
       }
     } else if (network === 'twitter') {

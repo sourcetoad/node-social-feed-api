@@ -42,7 +42,7 @@ export default class Facebook {
    */
   getFeed() {
     return new Promise((fulfill, reject) => {
-      request(`https://graph.facebook.com/${this.data.pageId}/feed?access_token=${this.accessToken}`, (err, response, body) => {
+      request(`https://graph.facebook.com/${this.data.pageId}/posts?access_token=${this.accessToken}`, (err, response, body) => {
         if (err || response.statusCode >= 400) {
           reject(err || body);
         } else {

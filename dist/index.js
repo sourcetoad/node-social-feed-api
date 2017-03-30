@@ -33,10 +33,18 @@ var SocialFeedAPI = function () {
   function SocialFeedAPI(config) {
     _classCallCheck(this, SocialFeedAPI);
 
-    this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId);
-    this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
-    this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.redirectURI);
-    this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI, config.google.refreshToken);
+    if (config.facebook) {
+      this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId);
+    }
+    if (config.twitter) {
+      this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
+    }
+    if (config.instagram) {
+      this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.redirectURI);
+    }
+    if (config.google) {
+      this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI, config.google.refreshToken);
+    }
   }
 
   /**
@@ -93,7 +101,7 @@ var SocialFeedAPI = function () {
       var _this3 = this;
 
       return new Promise(function (fulfill, reject) {
-        Promise.all([_this3.facebook.fetch(), _this3.twitter.fetch(), _this3.instagram.fetch(accessTokens.instagram), _this3.google.fetch()]).then(function (res) {
+        Promise.all([_this3.facebook ? _this3.facebook.fetch() : Promise.resolve(null), _this3.twitter ? _this3.twitter.fetch() : Promise.resolve(null), _this3.instagram ? _this3.instagram.fetch(accessTokens.instagram) : Promise.resolve(null), _this3.google ? _this3.google.fetch() : Promise.resolve(null)]).then(function (res) {
           fulfill({
             facebook: res[0] || {},
             twitter: res[1] || {},
