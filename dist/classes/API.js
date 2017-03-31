@@ -25,6 +25,7 @@ var API = function () {
     value: function normalize(network, data) {
       var items = [];
       // TODO: make these fields more customizable
+      // TODO: loop through all attachments
       if (network === 'facebook') {
         for (var i = 0; i < data.length; i++) {
           items.push({

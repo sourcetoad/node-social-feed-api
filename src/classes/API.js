@@ -8,6 +8,7 @@ export default class API {
   static normalize(network, data) {
     const items = [];
     // TODO: make these fields more customizable
+    // TODO: loop through all attachments
     if (network === 'facebook') {
       for (let i = 0; i < data.length; i++) {
         items.push({
