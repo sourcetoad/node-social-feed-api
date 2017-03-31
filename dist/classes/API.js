@@ -83,7 +83,15 @@ var API = function () {
           items.push({
             id: data[_i3].id,
             text: data[_i3].object.content,
-            created_at: data[_i3].published
+            created_at: data[_i3].published,
+            media: {
+              images: data[_i3].object.attachments[0].objectType === 'photo' ? {
+                standard: data[_i3].object.attachments[0].url
+              } : {},
+              videos: data[_i3].object.attachments[0].objectType === 'video' ? {
+                standard: data[_i3].object.attachments[0].url
+              } : {}
+            }
           });
         }
       }

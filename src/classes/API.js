@@ -67,6 +67,14 @@ export default class API {
           id: data[i].id,
           text: data[i].object.content,
           created_at: data[i].published,
+          media: {
+            images: data[i].object.attachments[0].objectType === 'photo' ? {
+              standard: data[i].object.attachments[0].url,
+            } : {},
+            videos: data[i].object.attachments[0].objectType === 'video' ? {
+              standard: data[i].object.attachments[0].url,
+            } : {},
+          },
         });
       }
     }
