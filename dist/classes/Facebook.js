@@ -70,7 +70,7 @@ var Facebook = function () {
       var _this2 = this;
 
       return new Promise(function (fulfill, reject) {
-        (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/posts?access_token=' + _this2.accessToken, function (err, response, body) {
+        (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/posts?access_token=' + _this2.accessToken + '&fields=attachments,message,created_time', function (err, response, body) {
           if (err || response.statusCode >= 400) {
             reject(err || body);
           } else {

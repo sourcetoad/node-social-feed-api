@@ -30,7 +30,18 @@ var API = function () {
           items.push({
             id: data[i].id,
             text: data[i].message,
-            created_at: data[i].created_time
+            created_at: data[i].created_time,
+            media: data[i].attachments.data[0] ? {
+              images: data[i].attachments.data[0].type === 'photo' ? {
+                standard: data[i].attachments.data[0].url
+              } : {},
+              videos: data[i].attachments.data[0].type === 'video_inline' ? {
+                standard: data[i].attachments.data[0].url
+              } : {},
+              share: data[i].attachments.data[0].type === 'share' ? {
+                standard: data[i].attachments.data[0].url
+              } : {}
+            } : {}
           });
         }
       } else if (network === 'twitter') {
@@ -43,7 +54,7 @@ var API = function () {
               images: {
                 standard: data[_i].entities.media[0].media_url_https
               }
-            } : null
+            } : {}
           });
         }
       } else if (network === 'instagram') {
@@ -62,7 +73,7 @@ var API = function () {
                 low_bandwidth: data[_i2].videos.low_bandwidth.url,
                 standard: data[_i2].videos.standard_resolution.url,
                 low: data[_i2].videos.low_resolution.url
-              } : null
+              } : {}
             }
           });
         }

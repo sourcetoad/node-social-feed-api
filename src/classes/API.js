@@ -14,6 +14,17 @@ export default class API {
           id: data[i].id,
           text: data[i].message,
           created_at: data[i].created_time,
+          media: data[i].attachments.data[0] ? {
+            images: data[i].attachments.data[0].type === 'photo' ? {
+              standard: data[i].attachments.data[0].url,
+            } : {},
+            videos: data[i].attachments.data[0].type === 'video_inline' ? {
+              standard: data[i].attachments.data[0].url,
+            } : {},
+            share: data[i].attachments.data[0].type === 'share' ? {
+              standard: data[i].attachments.data[0].url,
+            } : {},
+          } : {},
         });
       }
     } else if (network === 'twitter') {
@@ -26,7 +37,7 @@ export default class API {
             images: {
               standard: data[i].entities.media[0].media_url_https,
             },
-          } : null,
+          } : {},
         });
       }
     } else if (network === 'instagram') {
@@ -45,7 +56,7 @@ export default class API {
               low_bandwidth: data[i].videos.low_bandwidth.url,
               standard: data[i].videos.standard_resolution.url,
               low: data[i].videos.low_resolution.url,
-            } : null,
+            } : {},
           },
         });
       }
