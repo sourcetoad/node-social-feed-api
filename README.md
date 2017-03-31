@@ -1,7 +1,5 @@
 # node-social-feed-api
 
-##### **CURRENTLY IN DEVELOPMENT**
-
 Simple module to fetch all social feeds and output in one simple API call.
 ### Currently supported
 
@@ -11,8 +9,7 @@ Simple module to fetch all social feeds and output in one simple API call.
 
 ### Install
 
-##### NOTE: not published yet
-`npm install --save social-feed-api`
+`npm install --save social-feed-api --production`
 
 ### Setup
 
@@ -22,12 +19,12 @@ Instagram and Google both require user-specific access tokens, thus requiring sp
 
 ** Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below. **
 
-To get an instagram user id go to: https://www.instagram.com/YOUR_USERNAME/?__a=1
 
-1. In a web browser, navigate to https://www.instagram.com/oauth/authorize/?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code. It will prompt you to login with an instagram account. This is to generate an access token.
-2. Once logged in, click the green authorize button.
-3. In your console, you should see an object output. One of the fields is called access_token. If you see that, you have successfully generated your access token!
-4. Take that access token and place it in your applications env file or equivalent so you do not have to continually generate a new access token (Instagrams access tokens do not expire as of today).
+1. First we will need to get the user id of the instagram user you would like to get the feed for. To do this you can go to: https://www.instagram.com/YOUR_USERNAME/?__a=1
+2. In a web browser, navigate to https://www.instagram.com/oauth/authorize/?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code. It will prompt you to login with an instagram account. This is to generate an access token.
+3. Once logged in, click the green authorize button.
+4. In your console, you should see an object output. One of the fields is called access_token. If you see that, you have successfully generated your access token!
+5. Take that access token and place it in your applications env file or equivalent so you do not have to continually generate a new access token (Instagrams access tokens do not expire as of today).
 ```javascript
 social.initializeInstagram('YOUR_CODE_FROM_CALLBACK_URI')
 .then(response => {
@@ -76,6 +73,7 @@ const social = new SocialFeed({
     clientId: instagramClientId,
     clientSecret: instagramClientSecret,
     redirectURI: instagramRedirectURI,
+    userId: instagramUserId,
   },
   google: {
     clientId: googleClientId,
@@ -107,12 +105,14 @@ import {
   instagramClientSecret,
   instagramRedirectURI,
   instagramAccessToken,
+  instagramUserId,
   googleClientId,
   googleClientSecret,
   googleRedirectURI,
   googleUserId,
   googleRefreshToken,
   port,
+  env,
 } from './env';
 
 const app = express();
@@ -136,6 +136,7 @@ const social = new SocialFeed({
     clientId: instagramClientId,
     clientSecret: instagramClientSecret,
     redirectURI: instagramRedirectURI,
+    userId: instagramUserId,
   },
   google: {
     clientId: googleClientId,
@@ -162,22 +163,17 @@ app.get('/v1/socialFeed', (req, res) => {
   });
 });
 
-app.get('/v1/instaRedirect', (req, res) => {
-  if (instaAccessToken) res.status(400).json({ message: 'Access token already generated' });
-  if (req.query.code) {
-    if (!instaAccessToken) {
-      social.initializeInstagram(req.query.code)
-      .then(response => {
-        console.log(response);
-        instaAccessToken = response.access_token;
-        res.status(201).json({ message: 'Access token generated successfully!' });
-      }, () => {
-        res.status(400).json({ message: 'Error occurred generating instagram access token.' });
-      });
-    }
-  } else {
-    res.status(400).json({ error: 'An error occurred' });
-  }
+app.get('/v1/socialFeed', (req, res) => {
+  const accessTokens = {
+    instagram: instaAccessToken,
+  };
+  social.getFeeds(accessTokens)
+  .then(response => {
+    res.status(200).json({ response });
+  }, err => {
+    console.error(err);
+    res.status(400).json({ error: 'There was an error fetching feeds' });
+  });
 });
 
 app.get('/v1/googleRedirect', (req, res) => {

@@ -1,6 +1,6 @@
 {
   "name": "social-feed-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Aggregates social media feeds and outputs them to use in an API",
   "main": "dist/index.js",
   "scripts": {
@@ -36,7 +36,6 @@
     "gulp-babel": "^6.1.2"
   },
   "dependencies": {
-    "instagram": "0.0.4",
     "request": "^2.81.0",
     "twitter": "^1.7.0"
   }
