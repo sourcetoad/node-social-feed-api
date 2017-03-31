@@ -21,6 +21,9 @@ Instagram and Google both require user-specific access tokens, thus requiring sp
 ##### Instagram
 
 ** Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below. **
+
+To get an instagram user id go to: https://www.instagram.com/YOUR_USERNAME/?__a=1
+
 1. In a web browser, navigate to https://www.instagram.com/oauth/authorize/?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code. It will prompt you to login with an instagram account. This is to generate an access token.
 2. Once logged in, click the green authorize button.
 3. In your console, you should see an object output. One of the fields is called access_token. If you see that, you have successfully generated your access token!

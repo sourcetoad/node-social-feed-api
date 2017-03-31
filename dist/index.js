@@ -40,7 +40,7 @@ var SocialFeedAPI = function () {
       this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
     }
     if (config.instagram) {
-      this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.redirectURI);
+      this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.userId, config.instagram.redirectURI);
     }
     if (config.google) {
       this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI, config.google.refreshToken);

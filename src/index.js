@@ -28,6 +28,7 @@ export default class SocialFeedAPI {
       this.instagram = new Instagram(
         config.instagram.clientId,
         config.instagram.clientSecret,
+        config.instagram.userId,
         config.instagram.redirectURI,
       );
     }
