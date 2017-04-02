@@ -1,17 +1,18 @@
 # node-social-feed-api
 
 Simple module to fetch all social feeds and output in one simple API call.
-### Currently supported
+## Currently supported
 
-1. Facebook
-2. Twitter
-3. Instagram
+- Facebook
+- Twitter
+- Instagram
+- Google Plus
 
-### Install
+## Install
 
-`npm install --save social-feed-api --production`
+`npm install --save social-feed-api`
 
-### Setup
+## Setup
 
 Instagram and Google both require user-specific access tokens, thus requiring special setup. See full example below for more specific examples.
 
