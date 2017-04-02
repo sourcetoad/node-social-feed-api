@@ -1,6 +1,7 @@
 # node-social-feed-api
 
 Simple module to fetch all social feeds and output in one simple API call.
+
 ## Currently supported
 
 - Facebook

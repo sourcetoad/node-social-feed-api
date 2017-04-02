@@ -1,6 +1,6 @@
 {
   "name": "social-feed-api",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Aggregates social media feeds and outputs them to use in an API",
   "main": "dist/index.js",
   "scripts": {
