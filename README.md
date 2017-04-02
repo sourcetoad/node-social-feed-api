@@ -18,7 +18,7 @@ Instagram and Google both require user-specific access tokens, thus requiring sp
 
 ##### Instagram
 
-** Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below. **
+**Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below.**
 
 
 1. First we will need to get the user id of the instagram user you would like to get the feed for. To do this you can go to: https://www.instagram.com/YOUR_USERNAME/?__a=1
@@ -38,7 +38,7 @@ social.initializeInstagram('YOUR_CODE_FROM_CALLBACK_URI')
 ```
 
 ##### Google
-** Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below. **
+**Before you begin, make sure you have an endpoint set up for your redirect uri. See full example section below.**
 
 1. In a web browser, navigate to https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=YOUR_REDIRECT_URI&response_type=code&client_id=YOUR_CLIENT_IDscope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&access_type=offline
 2. Click "Allow"
