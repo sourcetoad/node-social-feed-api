@@ -63,6 +63,10 @@ const social = new SocialFeed({
     appId: 'YOUR_FB_APP_ID',
     appSecret: 'YOUR_FB_APP_SECRET',
     pageId: 'PAGE_ID_YOU_ARE_FETCHING',
+    image: {
+      height: 100,
+      width: 100,
+    },
   },
   twitter: {
     consumerKey: 'YOUR_TWITTER_CONSUMER_KEY',
@@ -126,6 +130,10 @@ const social = new SocialFeed({
     appId: fbAppId,
     appSecret: fbAppSecret,
     pageId: fbPageId,
+    image: {
+      height: 100,
+      width: 100,
+    },
   },
   twitter: {
     consumerKey: twitterConsumerKey,
@@ -151,7 +159,6 @@ const social = new SocialFeed({
 
 let instaAccessToken = instagramAccessToken || '';
 
-// TODO: add error logging
 app.get('/v1/socialFeed', (req, res) => {
   const accessTokens = {
     instagram: instaAccessToken,
