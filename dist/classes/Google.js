@@ -123,7 +123,13 @@ var Google = function () {
                 error: err || body
               });
             } else {
-              fulfill(_API2.default.normalize('google', JSON.parse(body).items));
+              var output = JSON.parse(body).items;
+              output.unshift({
+                id: output[0].actor.id,
+                name: output[0].actor.displayName,
+                profileImage: output[0].actor.image.url
+              });
+              fulfill(_API2.default.normalize('google', output));
             }
           });
         });

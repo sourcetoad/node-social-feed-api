@@ -10,7 +10,7 @@ export default class API {
     // TODO: make these fields more customizable
     // TODO: loop through all attachments
     if (network === 'facebook') {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 1; i < data.length; i++) {
         items.push({
           id: data[i].id,
           text: data[i].message,
@@ -29,7 +29,7 @@ export default class API {
         });
       }
     } else if (network === 'twitter') {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 1; i < data.length; i++) {
         items.push({
           id: data[i].id,
           text: data[i].text,
@@ -42,7 +42,7 @@ export default class API {
         });
       }
     } else if (network === 'instagram') {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 1; i < data.length; i++) {
         items.push({
           id: data[i].id,
           text: data[i].caption.text,
@@ -62,7 +62,7 @@ export default class API {
         });
       }
     } else if (network === 'google') {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 1; i < data.length; i++) {
         items.push({
           id: data[i].id,
           text: data[i].object.content,
@@ -81,8 +81,9 @@ export default class API {
 
     return {
       _meta: {
-        count: data.length,
+        count: data.length - 1,
       },
+      account: data[0],
       items,
     };
   }

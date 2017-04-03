@@ -27,7 +27,7 @@ var API = function () {
       // TODO: make these fields more customizable
       // TODO: loop through all attachments
       if (network === 'facebook') {
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 1; i < data.length; i++) {
           items.push({
             id: data[i].id,
             text: data[i].message,
@@ -46,7 +46,7 @@ var API = function () {
           });
         }
       } else if (network === 'twitter') {
-        for (var _i = 0; _i < data.length; _i++) {
+        for (var _i = 1; _i < data.length; _i++) {
           items.push({
             id: data[_i].id,
             text: data[_i].text,
@@ -59,7 +59,7 @@ var API = function () {
           });
         }
       } else if (network === 'instagram') {
-        for (var _i2 = 0; _i2 < data.length; _i2++) {
+        for (var _i2 = 1; _i2 < data.length; _i2++) {
           items.push({
             id: data[_i2].id,
             text: data[_i2].caption.text,
@@ -79,7 +79,7 @@ var API = function () {
           });
         }
       } else if (network === 'google') {
-        for (var _i3 = 0; _i3 < data.length; _i3++) {
+        for (var _i3 = 1; _i3 < data.length; _i3++) {
           items.push({
             id: data[_i3].id,
             text: data[_i3].object.content,
@@ -98,8 +98,9 @@ var API = function () {
 
       return {
         _meta: {
-          count: data.length
+          count: data.length - 1
         },
+        account: data[0],
         items: items
       };
     }

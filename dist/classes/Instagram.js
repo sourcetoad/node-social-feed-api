@@ -93,7 +93,14 @@ var Instagram = function () {
               error: err || body
             });
           } else {
-            fulfill(_API2.default.normalize('instagram', JSON.parse(body).data));
+            var data = JSON.parse(body).data;
+            data.unshift({
+              id: data[0].user.id,
+              name: data[0].user.full_name,
+              handle: data[0].user.username,
+              profileImage: data[0].user.profile_picture
+            });
+            fulfill(_API2.default.normalize('instagram', data));
           }
         });
       });

@@ -24,15 +24,17 @@ var Facebook = function () {
    * @param {string} appSecret
    * @param {string} pageId
    */
-  function Facebook(appId, appSecret, pageId) {
+  function Facebook(appId, appSecret, pageId, profileImage) {
     _classCallCheck(this, Facebook);
 
     this.accessToken = null;
     this.data = {
       appId: appId || null,
       appSecret: appSecret || null,
-      pageId: pageId || null
+      pageId: pageId || null,
+      profileImage: profileImage || null
     };
+    this.profileImageUrl = null;
   }
 
   /**
@@ -70,11 +72,56 @@ var Facebook = function () {
       var _this2 = this;
 
       return new Promise(function (fulfill, reject) {
-        (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/posts?access_token=' + _this2.accessToken + '&fields=attachments,message,created_time', function (err, response, body) {
+        // If picture is not set, get that first
+        if (!_this2.profileImageUrl) {
+          _this2.getProfileImage().then(function (res) {
+            _this2.profileImageUrl = res;
+            (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/posts?access_token=' + _this2.accessToken + '&fields=attachments,message,created_time,from', function (err, response, body) {
+              if (err || response.statusCode >= 400) {
+                reject(err || body);
+              } else {
+                var output = JSON.parse(body).data;
+                output.unshift({
+                  id: output[0].from.id,
+                  name: output[0].from.name,
+                  profileImage: _this2.profileImageUrl
+                });
+                fulfill(output);
+              }
+            });
+          });
+        } else {
+          (0, _request2.default)('https://graph.facebook.com/' + _this2.data.pageId + '/posts?access_token=' + _this2.accessToken + '&fields=attachments,message,created_time,from', function (err, response, body) {
+            if (err || response.statusCode >= 400) {
+              reject(err || body);
+            } else {
+              var output = JSON.parse(body).data;
+              output.unshift({
+                name: output[0].from.name,
+                profileImage: _this2.profileImageUrl
+              });
+              fulfill(output);
+            }
+          });
+        }
+      });
+    }
+
+    /**
+     * Fetches profile picture
+     */
+
+  }, {
+    key: 'getProfileImage',
+    value: function getProfileImage() {
+      var _this3 = this;
+
+      return new Promise(function (fulfill, reject) {
+        (0, _request2.default)('https://graph.facebook.com/' + _this3.data.pageId + '/picture?access_token=' + _this3.accessToken + '&redirect=false&height=' + _this3.data.profileImage.height + '&width=' + _this3.data.profileImage.width, function (err, response, body) {
           if (err || response.statusCode >= 400) {
             reject(err || body);
           } else {
-            fulfill(JSON.parse(body).data);
+            fulfill(JSON.parse(body).data.url);
           }
         });
       });
@@ -89,13 +136,13 @@ var Facebook = function () {
   }, {
     key: 'fetch',
     value: function fetch() {
-      var _this3 = this;
+      var _this4 = this;
 
       return new Promise(function (fulfill, reject) {
         // If no access token yet, get one
-        if (_this3.accessToken === null) {
-          _this3.getAccessToken().then(function () {
-            return _this3.getFeed();
+        if (_this4.accessToken === null) {
+          _this4.getAccessToken().then(function () {
+            return _this4.getFeed();
           }, function (err) {
             throw new Error(err);
           }).then(function (res) {
@@ -107,7 +154,7 @@ var Facebook = function () {
             });
           });
         } else {
-          _this3.getFeed().then(function (res) {
+          _this4.getFeed().then(function (res) {
             fulfill(_API2.default.normalize('facebook', res));
           }, function (err) {
             reject({

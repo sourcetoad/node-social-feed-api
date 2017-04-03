@@ -63,7 +63,14 @@ export default class Instagram {
             error: err || body,
           });
         } else {
-          fulfill(API.normalize('instagram', JSON.parse(body).data));
+          const data = JSON.parse(body).data;
+          data.unshift({
+            id: data[0].user.id,
+            name: data[0].user.full_name,
+            handle: data[0].user.username,
+            profileImage: data[0].user.profile_picture,
+          });
+          fulfill(API.normalize('instagram', data));
         }
       });
     });

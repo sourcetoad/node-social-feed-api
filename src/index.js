@@ -13,6 +13,7 @@ export default class SocialFeedAPI {
         config.facebook.appId,
         config.facebook.appSecret,
         config.facebook.pageId,
+        config.facebook.image,
       );
     }
     if (config.twitter) {

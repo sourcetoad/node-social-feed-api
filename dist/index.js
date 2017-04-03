@@ -34,7 +34,7 @@ var SocialFeedAPI = function () {
     _classCallCheck(this, SocialFeedAPI);
 
     if (config.facebook) {
-      this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId);
+      this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId, config.facebook.image);
     }
     if (config.twitter) {
       this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);

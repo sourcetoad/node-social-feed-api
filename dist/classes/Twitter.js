@@ -58,6 +58,12 @@ var Twitter = function () {
               error: err || body
             });
           } else {
+            body.unshift({
+              id: body[0].user.id_str,
+              name: body[0].user.name,
+              handle: body[0].user.screen_name,
+              profileImage: body[0].user.profile_image_url_https
+            });
             fulfill(_API2.default.normalize('twitter', body));
           }
         });
