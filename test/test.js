@@ -1,4 +1,4 @@
-const env = require('./env.js');
+// const env = require('./env.js');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const assert = chai.assert;
@@ -8,34 +8,34 @@ const SocialFeed = require('../dist/').default;
 chai.use(chaiHttp);
 const social = new SocialFeed({
   facebook: {
-    appId: env.fbAppId,
-    appSecret: env.fbAppSecret,
-    pageId: env.fbPageId,
+    appId: fbAppId,
+    appSecret: fbAppSecret,
+    pageId: fbPageId,
     image: {
       height: 100,
       width: 100,
     },
   },
   twitter: {
-    consumerKey: env.twitterConsumerKey,
-    consumerSecret: env.twitterConsumerSecret,
-    accessTokenKey: env.twitterAccessTokenKey,
-    accessTokenSecret: env.twitterAccessTokenSecret,
-    screenName: env.twitterScreenName,
+    consumerKey: twitterConsumerKey,
+    consumerSecret: twitterConsumerSecret,
+    accessTokenKey: twitterAccessTokenKey,
+    accessTokenSecret: twitterAccessTokenSecret,
+    screenName: twitterScreenName,
   },
   instagram: {
-    clientId: env.instagramClientId,
-    clientSecret: env.instagramClientSecret,
-    redirectURI: env.instagramRedirectURI,
-    userId: env.instagramUserId,
-    accessToken: env.instagramAccessToken,
+    clientId: instagramClientId,
+    clientSecret: instagramClientSecret,
+    redirectURI: instagramRedirectURI,
+    userId: instagramUserId,
+    accessToken: instagramAccessToken,
   },
   google: {
-    clientId: env.googleClientId,
-    clientSecret: env.googleClientSecret,
-    userId: env.googleUserId,
-    redirectURI: env.googleRedirectURI,
-    refreshToken: env.googleRefreshToken,
+    clientId: googleClientId,
+    clientSecret: googleClientSecret,
+    userId: googleUserId,
+    redirectURI: googleRedirectURI,
+    refreshToken: googleRefreshToken,
   },
 });
 
@@ -74,9 +74,9 @@ describe('Test getFeeds() with all social networks', () => {
 describe('Test getFeeds() with just facebook', () => {
   const network = new SocialFeed({
     facebook: {
-      appId: env.fbAppId,
-      appSecret: env.fbAppSecret,
-      pageId: env.fbPageId,
+      appId: fbAppId,
+      appSecret: fbAppSecret,
+      pageId: fbPageId,
       image: {
         height: 100,
         width: 100,
@@ -94,11 +94,11 @@ describe('Test getFeeds() with just facebook', () => {
 describe('Test getFeeds() with just twitter', () => {
   const network = new SocialFeed({
     twitter: {
-      consumerKey: env.twitterConsumerKey,
-      consumerSecret: env.twitterConsumerSecret,
-      accessTokenKey: env.twitterAccessTokenKey,
-      accessTokenSecret: env.twitterAccessTokenSecret,
-      screenName: env.twitterScreenName,
+      consumerKey: twitterConsumerKey,
+      consumerSecret: twitterConsumerSecret,
+      accessTokenKey: twitterAccessTokenKey,
+      accessTokenSecret: twitterAccessTokenSecret,
+      screenName: twitterScreenName,
     },
   });
   it('should return with just twitter', () => {
@@ -112,11 +112,11 @@ describe('Test getFeeds() with just twitter', () => {
 describe('Test getFeeds() with just instagram', () => {
   const network = new SocialFeed({
     instagram: {
-      clientId: env.instagramClientId,
-      clientSecret: env.instagramClientSecret,
-      redirectURI: env.instagramRedirectURI,
-      userId: env.instagramUserId,
-      accessToken: env.instagramAccessToken,
+      clientId: instagramClientId,
+      clientSecret: instagramClientSecret,
+      redirectURI: instagramRedirectURI,
+      userId: instagramUserId,
+      accessToken: instagramAccessToken,
     },
   });
   it('should return with just instagram', () => {
@@ -130,11 +130,11 @@ describe('Test getFeeds() with just instagram', () => {
 describe('Test getFeeds() with just google', () => {
   const network = new SocialFeed({
     google: {
-      clientId: env.googleClientId,
-      clientSecret: env.googleClientSecret,
-      userId: env.googleUserId,
-      redirectURI: env.googleRedirectURI,
-      refreshToken: env.googleRefreshToken,
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
+      userId: googleUserId,
+      redirectURI: googleRedirectURI,
+      refreshToken: googleRefreshToken,
     },
   });
   it('should return with just google', () => {
