@@ -1,1 +1,6 @@
 src/
+.travis.yml
+test/
+.eslintrc
+.eslintignore
+gulpfile.js

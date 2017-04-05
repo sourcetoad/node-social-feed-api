@@ -79,16 +79,22 @@ export default class SocialFeedAPI {
 
   /**
    * Aggregates all social media feeds
-   * TODO: Don't require all networks.
    *
+   * @param {object} accessTokens DEPRECATED: object of accessTokens
    * @return {Promise}
    */
-  getFeeds() {
+  getFeeds(accessTokens) {
+    if (accessTokens) console.warn('NOTE: passing access tokens to getFeeds is now deprecated. Pass access token in constructor. See readme.md');
+    let instagram = null;
+    if (this.instagram) {
+      instagram = accessTokens ?
+        this.instagram.fetch(accessTokens.instagram) : this.instagram.fetch();
+    }
     return new Promise((fulfill, reject) => {
       Promise.all([
         this.facebook ? this.facebook.fetch() : Promise.resolve(null),
         this.twitter ? this.twitter.fetch() : Promise.resolve(null),
-        this.instagram ? this.instagram.fetch() : Promise.resolve(null),
+        this.instagram ? instagram : Promise.resolve(null),
         this.google ? this.google.fetch() : Promise.resolve(null),
       ])
       .then(res => {

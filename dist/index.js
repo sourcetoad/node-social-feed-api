@@ -90,18 +90,23 @@ var SocialFeedAPI = function () {
 
     /**
      * Aggregates all social media feeds
-     * TODO: Don't require all networks.
      *
+     * @param {object} accessTokens DEPRECATED: object of accessTokens
      * @return {Promise}
      */
 
   }, {
     key: 'getFeeds',
-    value: function getFeeds() {
+    value: function getFeeds(accessTokens) {
       var _this3 = this;
 
+      if (accessTokens) console.warn('NOTE: passing access tokens to getFeeds is now deprecated. Pass access token in constructor. See readme.md');
+      var instagram = null;
+      if (this.instagram) {
+        instagram = accessTokens ? this.instagram.fetch(accessTokens.instagram) : this.instagram.fetch();
+      }
       return new Promise(function (fulfill, reject) {
-        Promise.all([_this3.facebook ? _this3.facebook.fetch() : Promise.resolve(null), _this3.twitter ? _this3.twitter.fetch() : Promise.resolve(null), _this3.instagram ? _this3.instagram.fetch() : Promise.resolve(null), _this3.google ? _this3.google.fetch() : Promise.resolve(null)]).then(function (res) {
+        Promise.all([_this3.facebook ? _this3.facebook.fetch() : Promise.resolve(null), _this3.twitter ? _this3.twitter.fetch() : Promise.resolve(null), _this3.instagram ? instagram : Promise.resolve(null), _this3.google ? _this3.google.fetch() : Promise.resolve(null)]).then(function (res) {
           fulfill({
             facebook: res[0] || {},
             twitter: res[1] || {},

@@ -4,6 +4,8 @@ Simple module to fetch all social feeds and output in one simple API call.
 
 [![NPM](https://nodei.co/npm/social-feed-api.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/social-feed-api/)
 
+[![Build Status](https://travis-ci.org/sourcetoad/node-social-feed-api.svg?branch=master)](https://travis-ci.org/sourcetoad/node-social-feed-api)
+
 ## Currently supported
 
 - Facebook
@@ -82,6 +84,7 @@ const social = new SocialFeed({
     clientSecret: instagramClientSecret,
     redirectURI: instagramRedirectURI,
     userId: instagramUserId,
+    accessToken: instagramAccessToken,
   },
   google: {
     clientId: googleClientId,
@@ -149,6 +152,7 @@ const social = new SocialFeed({
     clientSecret: instagramClientSecret,
     redirectURI: instagramRedirectURI,
     userId: instagramUserId,
+    accessToken: instagramAccessToken,
   },
   google: {
     clientId: googleClientId,
@@ -175,10 +179,7 @@ app.get('/v1/socialFeed', (req, res) => {
 });
 
 app.get('/v1/socialFeed', (req, res) => {
-  const accessTokens = {
-    instagram: instaAccessToken,
-  };
-  social.getFeeds(accessTokens)
+  social.getFeeds()
   .then(response => {
     res.status(200).json({ response });
   }, err => {

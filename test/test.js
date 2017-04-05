@@ -125,6 +125,21 @@ describe('Test getFeeds() with just instagram', () => {
         socialMediaParser(['instagram'], res);
       });
   });
+
+  it('should return ok with deprecated instagram method', () => {
+    const instaDeprecated = new SocialFeed({
+      instagram: {
+        clientId: env.instagramClientId,
+        clientSecret: env.instagramClientSecret,
+        redirectURI: env.instagramRedirectURI,
+        userId: env.instagramUserId,
+      },
+    });
+    return instaDeprecated.getFeeds({ instagram: env.instagramAccessToken })
+      .then(res => {
+        socialMediaParser(['instagram'], res);
+      });
+  });
 });
 
 describe('Test getFeeds() with just google', () => {
