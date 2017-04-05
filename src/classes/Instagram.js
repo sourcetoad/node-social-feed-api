@@ -8,13 +8,13 @@ export default class Instagram {
    * @param {string} userId
    * @param {string} redirectURI
    */
-  constructor(clientId, clientSecret, userId, redirectURI) {
+  constructor(clientId, clientSecret, userId, redirectURI, accessToken) {
     this.data = {
       clientId,
       clientSecret,
       redirectURI,
       userId,
-      accessToken: null,
+      accessToken: accessToken || null,
     };
   }
 
@@ -54,9 +54,9 @@ export default class Instagram {
    * @param {string} accessToken
    * @return {Promise}
    */
-  fetch(accessToken) {
+  fetch() {
     return new Promise((fulfill, reject) => {
-      request(`https://api.instagram.com/v1/users/${this.data.userId}/media/recent/?access_token=${accessToken}`, (err, response, body) => {
+      request(`https://api.instagram.com/v1/users/${this.data.userId}/media/recent/?access_token=${this.data.accessToken}`, (err, response, body) => {
         if (err || response.statusCode >= 400) {
           reject({
             source: 'instagram',

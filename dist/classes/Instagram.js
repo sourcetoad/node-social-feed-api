@@ -25,7 +25,7 @@ var Instagram = function () {
    * @param {string} userId
    * @param {string} redirectURI
    */
-  function Instagram(clientId, clientSecret, userId, redirectURI) {
+  function Instagram(clientId, clientSecret, userId, redirectURI, accessToken) {
     _classCallCheck(this, Instagram);
 
     this.data = {
@@ -33,7 +33,7 @@ var Instagram = function () {
       clientSecret: clientSecret,
       redirectURI: redirectURI,
       userId: userId,
-      accessToken: null
+      accessToken: accessToken || null
     };
   }
 
@@ -82,11 +82,11 @@ var Instagram = function () {
 
   }, {
     key: 'fetch',
-    value: function fetch(accessToken) {
+    value: function fetch() {
       var _this2 = this;
 
       return new Promise(function (fulfill, reject) {
-        (0, _request2.default)('https://api.instagram.com/v1/users/' + _this2.data.userId + '/media/recent/?access_token=' + accessToken, function (err, response, body) {
+        (0, _request2.default)('https://api.instagram.com/v1/users/' + _this2.data.userId + '/media/recent/?access_token=' + _this2.data.accessToken, function (err, response, body) {
           if (err || response.statusCode >= 400) {
             reject({
               source: 'instagram',

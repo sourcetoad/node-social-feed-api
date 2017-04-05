@@ -31,6 +31,7 @@ export default class SocialFeedAPI {
         config.instagram.clientSecret,
         config.instagram.userId,
         config.instagram.redirectURI,
+        config.instagram.accessToken,
       );
     }
     if (config.google) {
@@ -82,12 +83,12 @@ export default class SocialFeedAPI {
    *
    * @return {Promise}
    */
-  getFeeds(accessTokens) {
+  getFeeds() {
     return new Promise((fulfill, reject) => {
       Promise.all([
         this.facebook ? this.facebook.fetch() : Promise.resolve(null),
         this.twitter ? this.twitter.fetch() : Promise.resolve(null),
-        this.instagram ? this.instagram.fetch(accessTokens.instagram) : Promise.resolve(null),
+        this.instagram ? this.instagram.fetch() : Promise.resolve(null),
         this.google ? this.google.fetch() : Promise.resolve(null),
       ])
       .then(res => {

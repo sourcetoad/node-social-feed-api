@@ -40,7 +40,7 @@ var SocialFeedAPI = function () {
       this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
     }
     if (config.instagram) {
-      this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.userId, config.instagram.redirectURI);
+      this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.userId, config.instagram.redirectURI, config.instagram.accessToken);
     }
     if (config.google) {
       this.google = new _Google2.default(config.google.clientId, config.google.clientSecret, config.google.userId, config.google.redirectURI, config.google.refreshToken);
@@ -97,11 +97,11 @@ var SocialFeedAPI = function () {
 
   }, {
     key: 'getFeeds',
-    value: function getFeeds(accessTokens) {
+    value: function getFeeds() {
       var _this3 = this;
 
       return new Promise(function (fulfill, reject) {
-        Promise.all([_this3.facebook ? _this3.facebook.fetch() : Promise.resolve(null), _this3.twitter ? _this3.twitter.fetch() : Promise.resolve(null), _this3.instagram ? _this3.instagram.fetch(accessTokens.instagram) : Promise.resolve(null), _this3.google ? _this3.google.fetch() : Promise.resolve(null)]).then(function (res) {
+        Promise.all([_this3.facebook ? _this3.facebook.fetch() : Promise.resolve(null), _this3.twitter ? _this3.twitter.fetch() : Promise.resolve(null), _this3.instagram ? _this3.instagram.fetch() : Promise.resolve(null), _this3.google ? _this3.google.fetch() : Promise.resolve(null)]).then(function (res) {
           fulfill({
             facebook: res[0] || {},
             twitter: res[1] || {},

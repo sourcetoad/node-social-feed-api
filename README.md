@@ -2,6 +2,8 @@
 
 Simple module to fetch all social feeds and output in one simple API call.
 
+[![NPM](https://nodei.co/npm/social-feed-api.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/social-feed-api/)
+
 ## Currently supported
 
 - Facebook
