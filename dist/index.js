@@ -37,7 +37,7 @@ var SocialFeedAPI = function () {
       this.facebook = new _Facebook2.default(config.facebook.appId, config.facebook.appSecret, config.facebook.pageId, config.facebook.image);
     }
     if (config.twitter) {
-      this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName);
+      this.twitter = new _Twitter2.default(config.twitter.consumerKey, config.twitter.consumerSecret, config.twitter.accessTokenKey, config.twitter.accessTokenSecret, config.twitter.screenName, config.twitter.options);
     }
     if (config.instagram) {
       this.instagram = new _Instagram2.default(config.instagram.clientId, config.instagram.clientSecret, config.instagram.userId, config.instagram.redirectURI, config.instagram.accessToken);

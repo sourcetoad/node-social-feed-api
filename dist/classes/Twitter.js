@@ -25,11 +25,15 @@ var Twitter = function () {
    * @param {string} accessTokenKey
    * @param {string} accessTokenSecret
    * @param {string} screenName
+   * @param {string} excludeReplies
    */
   function Twitter(consumerKey, consumerSecret, accessTokenKey, accessTokenSecret, screenName) {
+    var options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : { excludeReplies: false };
+
     _classCallCheck(this, Twitter);
 
     this.screenName = screenName;
+    this.options = options;
     this.client = new _twitter2.default({
       consumer_key: consumerKey,
       consumer_secret: consumerSecret,
@@ -51,7 +55,7 @@ var Twitter = function () {
       var _this = this;
 
       return new Promise(function (fulfill, reject) {
-        _this.client.get('statuses/user_timeline', { screen_name: _this.screenName }, function (err, body, response) {
+        _this.client.get('statuses/user_timeline', { screen_name: _this.screenName, exclude_replies: _this.options.excludeReplies }, function (err, body, response) {
           if (err || response.statusCode >= 400) {
             reject({
               source: 'twitter',
