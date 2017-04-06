@@ -99,6 +99,7 @@ describe('Test getFeeds() with just twitter', () => {
       accessTokenKey: env.twitterAccessTokenKey,
       accessTokenSecret: env.twitterAccessTokenSecret,
       screenName: env.twitterScreenName,
+      options: { excludeReplies: true }
     },
   });
   it('should return with just twitter', () => {

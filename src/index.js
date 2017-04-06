@@ -23,6 +23,7 @@ export default class SocialFeedAPI {
         config.twitter.accessTokenKey,
         config.twitter.accessTokenSecret,
         config.twitter.screenName,
+        config.twitter.options,
       );
     }
     if (config.instagram) {
