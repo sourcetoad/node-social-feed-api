@@ -61,8 +61,10 @@ var SocialFeedAPI = function () {
 
       return new Promise(function (fulfill, reject) {
         _this.instagram.initialize(code).then(function (res) {
+          console.log(res);
           fulfill(res);
         }, function (err) {
+          console.log(err);
           reject(err);
         });
       });

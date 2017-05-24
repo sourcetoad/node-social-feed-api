@@ -54,13 +54,15 @@ var Twitter = function () {
     value: function fetch() {
       var _this = this;
 
-      return new Promise(function (fulfill, reject) {
-        _this.client.get('statuses/user_timeline', { screen_name: _this.screenName, exclude_replies: _this.options.excludeReplies }, function (err, body, response) {
-          if (err || response.statusCode >= 400) {
-            reject({
-              source: 'twitter',
-              error: err || body
-            });
+      return new Promise(function (fulfill) {
+        _this.client.get('statuses/user_timeline', {
+          screen_name: _this.screenName,
+          exclude_replies: Object.keys(_this.options).indexOf('excludeReplies') > -1 ? _this.options.excludeReplies : false,
+          count: _this.options.count || 20,
+          include_rts: Object.keys(_this.options).indexOf('includeRts') > -1 ? _this.options.includeRts : true
+        }, function (error, body, response) {
+          if (error || response.statusCode >= 400) {
+            fulfill({ error: error });
           } else {
             body.unshift({
               id: body[0].user.id_str,

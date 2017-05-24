@@ -57,12 +57,11 @@ export default class Instagram {
   fetch(token) {
     // DEPRECATED. Pass to constructor.
     const accessToken = token || this.data.accessToken;
-    return new Promise((fulfill, reject) => {
-      request(`https://api.instagram.com/v1/users/${this.data.userId}/media/recent/?access_token=${accessToken}`, (err, response, body) => {
-        if (err || response.statusCode >= 400) {
-          reject({
-            source: 'instagram',
-            error: err || body,
+    return new Promise(fulfill => {
+      request(`https://api.instagram.com/v1/users/${this.data.userId}/media/recent/?access_token=${accessToken}`, (error, response, body) => {
+        if (error || response.statusCode >= 400) {
+          fulfill({
+            error,
           });
         } else {
           const data = JSON.parse(body).data;

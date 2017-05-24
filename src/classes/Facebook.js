@@ -24,10 +24,10 @@ export default class Facebook {
    * @return {Promise}
    */
   getAccessToken() {
-    return new Promise((fulfill, reject) => {
+    return new Promise(fulfill => {
       request(`https://graph.facebook.com/oauth/access_token?grant_type=client_credentials&client_id=${this.data.appId}&client_secret=${this.data.appSecret}`,
         (error, response, body) => {
-          if (error) reject(error);
+          if (error) fulfill({ error });
           if (response.statusCode === 200) {
             this.accessToken = JSON.parse(body).access_token;
             fulfill();

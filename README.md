@@ -78,7 +78,11 @@ const social = new SocialFeed({
     accessTokenKey: 'YOUR_TWITTER_ACCESS_TOKEN_KEY',
     accessTokenSecret: 'YOUR_TWITTER_ACCESS_TOKEN_SECRET',
     screenName: 'HANDLE_YOU_ARE_FETCHING',
-    options: { excludeReplies: false },
+    options: {
+      excludeReplies: true,
+      count: 50,
+      include_rts: false,
+    },
   },
   instagram: {
     clientId: instagramClientId,
@@ -147,7 +151,11 @@ const social = new SocialFeed({
     accessTokenKey: twitterAccessTokenKey,
     accessTokenSecret: twitterAccessTokenSecret,
     screenName: twitterScreenName,
-    options: { excludeReplies: false },
+    options: {
+      excludeReplies: true,
+      count: 50,
+      include_rts: false,
+    },
   },
   instagram: {
     clientId: instagramClientId,

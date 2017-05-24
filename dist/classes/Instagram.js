@@ -87,12 +87,11 @@ var Instagram = function () {
 
       // DEPRECATED. Pass to constructor.
       var accessToken = token || this.data.accessToken;
-      return new Promise(function (fulfill, reject) {
-        (0, _request2.default)('https://api.instagram.com/v1/users/' + _this2.data.userId + '/media/recent/?access_token=' + accessToken, function (err, response, body) {
-          if (err || response.statusCode >= 400) {
-            reject({
-              source: 'instagram',
-              error: err || body
+      return new Promise(function (fulfill) {
+        (0, _request2.default)('https://api.instagram.com/v1/users/' + _this2.data.userId + '/media/recent/?access_token=' + accessToken, function (error, response, body) {
+          if (error || response.statusCode >= 400) {
+            fulfill({
+              error: error
             });
           } else {
             var data = JSON.parse(body).data;

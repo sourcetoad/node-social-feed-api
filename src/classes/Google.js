@@ -29,7 +29,7 @@ export default class Google {
   initialize(code) {
     // If someway, somehow this is already set (which it shouldn't be at this point)
     if (this.data.accessToken !== null) return Promise.resolve(this.data.accessToken);
-    return new Promise((fulfill, reject) => {
+    return new Promise(fulfill => {
       request.post('https://www.googleapis.com/oauth2/v4/token', {
         form: {
           client_id: this.data.clientId,
@@ -38,9 +38,9 @@ export default class Google {
           redirect_uri: this.data.redirectURI,
           code,
         },
-      }, (err, response, body) => {
-        if (err || response.statusCode >= 400) {
-          reject(err || body);
+      }, (error, response, body) => {
+        if (error || response.statusCode >= 400) {
+          fulfill({ error });
         } else {
           fulfill(body);
         }

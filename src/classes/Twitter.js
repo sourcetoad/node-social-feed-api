@@ -29,14 +29,16 @@ export default class Twitter {
    * @return {Promise}
    */
   fetch() {
-    return new Promise((fulfill, reject) => {
-      this.client.get('statuses/user_timeline', { screen_name: this.screenName, exclude_replies: this.options.excludeReplies },
-        (err, body, response) => {
-          if (err || response.statusCode >= 400) {
-            reject({
-              source: 'twitter',
-              error: err || body,
-            });
+    return new Promise(fulfill => {
+      this.client.get('statuses/user_timeline', {
+        screen_name: this.screenName,
+        exclude_replies: Object.keys(this.options).indexOf('excludeReplies') > -1 ? this.options.excludeReplies : false,
+        count: this.options.count || 20,
+        include_rts: Object.keys(this.options).indexOf('includeRts') > -1 ? this.options.includeRts : true,
+      },
+        (error, body, response) => {
+          if (error || response.statusCode >= 400) {
+            fulfill({ error });
           } else {
             body.unshift({
               id: body[0].user.id_str,

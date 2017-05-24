@@ -54,7 +54,7 @@ var Google = function () {
 
       // If someway, somehow this is already set (which it shouldn't be at this point)
       if (this.data.accessToken !== null) return Promise.resolve(this.data.accessToken);
-      return new Promise(function (fulfill, reject) {
+      return new Promise(function (fulfill) {
         _request2.default.post('https://www.googleapis.com/oauth2/v4/token', {
           form: {
             client_id: _this.data.clientId,
@@ -63,9 +63,9 @@ var Google = function () {
             redirect_uri: _this.data.redirectURI,
             code: code
           }
-        }, function (err, response, body) {
-          if (err || response.statusCode >= 400) {
-            reject(err || body);
+        }, function (error, response, body) {
+          if (error || response.statusCode >= 400) {
+            fulfill({ error: error });
           } else {
             fulfill(body);
           }

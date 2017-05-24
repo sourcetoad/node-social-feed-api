@@ -55,8 +55,10 @@ export default class SocialFeedAPI {
     return new Promise((fulfill, reject) => {
       this.instagram.initialize(code)
       .then(res => {
+        console.log(res);
         fulfill(res);
       }, err => {
+        console.log(err);
         reject(err);
       });
     });

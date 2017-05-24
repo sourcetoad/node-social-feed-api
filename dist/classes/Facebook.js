@@ -49,9 +49,9 @@ var Facebook = function () {
     value: function getAccessToken() {
       var _this = this;
 
-      return new Promise(function (fulfill, reject) {
+      return new Promise(function (fulfill) {
         (0, _request2.default)('https://graph.facebook.com/oauth/access_token?grant_type=client_credentials&client_id=' + _this.data.appId + '&client_secret=' + _this.data.appSecret, function (error, response, body) {
-          if (error) reject(error);
+          if (error) fulfill({ error: error });
           if (response.statusCode === 200) {
             _this.accessToken = JSON.parse(body).access_token;
             fulfill();
