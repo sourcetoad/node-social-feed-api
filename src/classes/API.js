@@ -15,7 +15,7 @@ export default class API {
           id: data[i].id,
           text: data[i].message,
           created_at: data[i].created_time,
-          media: data[i].attachments.data[0] ? {
+          media: data[i].attachments && data[i].attachments.data[0] ? {
             images: data[i].attachments.data[0].type === 'photo' ? {
               standard: data[i].attachments.data[0].url,
             } : {},
@@ -45,8 +45,9 @@ export default class API {
       for (let i = 1; i < data.length; i++) {
         items.push({
           id: data[i].id,
-          text: data[i].caption.text,
-          created_at: new Date(parseFloat(data[i].caption.created_time, 10) * 1000).toISOString(),
+          text: data[i].caption ? data[i].caption.text : null,
+          created_at: data[i].caption ?
+            new Date(parseFloat(data[i].caption.created_time, 10) * 1000).toISOString() : null,
           media: {
             images: {
               low: data[i].images.low_resolution.url,
