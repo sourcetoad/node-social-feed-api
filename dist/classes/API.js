@@ -62,8 +62,8 @@ var API = function () {
         for (var _i2 = 1; _i2 < data.length; _i2++) {
           items.push({
             id: data[_i2].id,
-            text: data[_i2].caption.text,
-            created_at: new Date(parseFloat(data[_i2].caption.created_time, 10) * 1000).toISOString(),
+            text: data[_i2].caption ? data[_i2].caption.text : null,
+            created_at: data[_i2].caption ? new Date(parseFloat(data[_i2].caption.created_time, 10) * 1000).toISOString() : null,
             media: {
               images: {
                 low: data[_i2].images.low_resolution.url,

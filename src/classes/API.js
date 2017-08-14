@@ -45,8 +45,9 @@ export default class API {
       for (let i = 1; i < data.length; i++) {
         items.push({
           id: data[i].id,
-          text: data[i].caption.text,
-          created_at: new Date(parseFloat(data[i].caption.created_time, 10) * 1000).toISOString(),
+          text: data[i].caption ? data[i].caption.text : null,
+          created_at: data[i].caption ?
+            new Date(parseFloat(data[i].caption.created_time, 10) * 1000).toISOString() : null,
           media: {
             images: {
               low: data[i].images.low_resolution.url,

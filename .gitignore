@@ -2,3 +2,4 @@
 ./dist/env.js
 node_modules/
 test/env.js
+.DS_Store
