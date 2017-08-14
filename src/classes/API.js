@@ -15,7 +15,7 @@ export default class API {
           id: data[i].id,
           text: data[i].message,
           created_at: data[i].created_time,
-          media: data[i].attachments.data[0] ? {
+          media: data[i].attachments && data[i].attachments.data[0] ? {
             images: data[i].attachments.data[0].type === 'photo' ? {
               standard: data[i].attachments.data[0].url,
             } : {},
